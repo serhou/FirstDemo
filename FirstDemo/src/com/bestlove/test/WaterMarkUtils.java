@@ -9,8 +9,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -47,10 +48,14 @@ public class WaterMarkUtils {
 				if ("jpg,png,gif,tif,bmp".indexOf(type) != -1) {
 					System.out.println("图片绝对路径：" + file.getAbsolutePath());
 					System.out.println("图片类型：" + type);
+					String dateTime = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date());
 					new WaterMarkUtils()
 							.mark(file.getAbsolutePath(), file.getParent()
-									+ File.separator + "new_" + file.getName(),
+									+ File.separator + "new_" + file.getName().split("\\.")[0]+"_"+dateTime+"."+type,
 									Color.RED, "@最爱导航网", type);
+					System.out.println("生成水印图片路径："+file.getParent()
+									+ File.separator + "new_" + file.getName().split("\\.")[0]+"_"+dateTime+"."+type);
+					System.out.println("*******************************************************************************");
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
