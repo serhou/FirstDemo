@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 /**
  * Redis key-value数据库
@@ -16,6 +17,7 @@ public class JavaConnect2Redis {
 	public static void main(String[] args) {
 		//Connecting to Redis server 远程数据库
 		Jedis jedis = new Jedis("192.168.18.129", 6379, 10000);
+		jedis.connect();
 		System.out.println(jedis.ping());
 		System.out.println(jedis.get("foo"));
 		System.out.println(jedis.get("age"));
@@ -76,7 +78,29 @@ public class JavaConnect2Redis {
 		jedis.del("dbproducts");
 		//订阅服务 一个客户端要开通一个频道：SUBSCRIBE redisChat
 		jedis.publish("redisChat", "Hello, Redis!");
-		
+		//Redis先以multi开始一个事务 然后将多个命令入队到事务中，最后有EXEC命令触发事务，一并执行事务中的所有命令
+		long start = System.currentTimeMillis();
+		//开始事务
+		Transaction tx = jedis.multi();
+		//命令入队
+		tx.set("book-name", "Thinking in Java");
+		System.out.println(tx.get("book-name"));
+		tx.sadd("tag", "Java", "Programming", "HotSpot");
+		System.out.println(tx.smembers("tag"));
+		System.out.println(tx.smembers("Programming"));
+		for (int i = 0; i < 10; i++) {
+			try {
+				Thread.sleep(1000);
+				tx.set("wait"+i, "low"+i);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		//触发事务
+		tx.exec();
+		long end = System.currentTimeMillis();
+		System.out.println("用时："+((end-start)/1000)+"s");
+		jedis.disconnect();
 		
 	}
 	
