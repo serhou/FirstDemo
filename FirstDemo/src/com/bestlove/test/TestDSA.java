@@ -15,6 +15,15 @@ import org.apache.commons.codec.binary.Hex;
 
 /**
  * 数字签名算法-DSA
+ * 
+ * 数字签名——带有密钥（公钥、私钥）的消息摘要算法
+ * 
+ * 验证数据完整性、认证数据来源、抗否认
+ * 
+ * OSI参考模型
+ * 
+ * 私钥签名、公钥验证
+ * 
  * @author think
  *
  */
