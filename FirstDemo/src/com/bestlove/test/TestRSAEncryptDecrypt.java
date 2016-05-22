@@ -19,6 +19,8 @@ import org.apache.commons.codec.binary.Base64;
  * 
  * 用的比较多，但是要考虑它的效率问题
  * 
+ * 基于因子分解
+ * 
  * @author think
  *
  */
