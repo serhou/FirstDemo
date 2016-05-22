@@ -19,6 +19,9 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * 非对称加密解密算法——DH
+ * 
+ * 密钥交换算法
+ * 
  * @author think
  *
  */
