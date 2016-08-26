@@ -139,3 +139,33 @@ curl -XGET http://localhost:9200/megacorp/employee/1?_source=last_nameee,about
 
 //仅仅只想得到_source字段而不要其他的元数据
 curl -XGET http://localhost:9200/megacorp/employee/1/_source
+
+//检验文档是否存在 存在返回200 OK
+curl -i -XHEAD http://localhost:9200/megacorp/employee/1
+
+//不存在 返回404 Not Found
+curl -i -XHEAD http://localhost:9200/megacorp/employee/978
+
+
+//添加一个新的文档
+curl -XPUT 'http://localhost:9200/website/blog/123' -d '{
+	"title" : "我们的祖国是花园",
+	"text" : "花园的花朵真鲜艳",
+	"date" : "2016-08-26"
+}'
+
+
+//更新这个文档   created标识为false因为同索引、同类型下已经存在同ID的文档  
+//版本号会增加  删除旧文档添加新文档，旧文档不会立即消失
+//Elasticsearch会在你继续索引更多数据时清理被删除的文档
+curl -XPUT 'http://localhost:9200/website/blog/123' -d '{
+	"title" : "秘密花园",
+	"text" : "我们的祖国是花园，花园的花朵真鲜艳",
+	"date" : "2016-08-26"
+}'
+
+//update API  过程如下：
+1.从旧文档中检索JSON
+2.修改它
+3.删除旧文档
+4.索引新文档
