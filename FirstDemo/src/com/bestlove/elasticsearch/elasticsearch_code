@@ -169,3 +169,18 @@ curl -XPUT 'http://localhost:9200/website/blog/123' -d '{
 2.修改它
 3.删除旧文档
 4.索引新文档
+
+
+//创建文档，自动生成ID  多次执行，每次生成的ID不一样
+curl -XPOST 'http://localhost:9200/website/blog' -d '{
+	"title" : "秘密花园",
+	"text" : "我们的祖国是花园，花园的花朵真鲜艳",
+	"date" : "2016-08-26"
+}'
+
+
+//删除文档  AVbLbcKouOylcyWrQKTY 为自动生成的ID  找到found为true
+curl -XDELETE 'http://localhost:9200/website/blog/AVbLbcKouOylcyWrQKTY'
+//多次删除同一个，found的值时false，但是_version依旧增加了。
+
+
