@@ -184,3 +184,17 @@ curl -XDELETE 'http://localhost:9200/website/blog/AVbLbcKouOylcyWrQKTY'
 //多次删除同一个，found的值时false，但是_version依旧增加了。
 
 
+//局部更新update API
+curl -XPOST 'http://localhost:9200/website/blog/123/_update' -d '{
+	"doc" : {
+		"tags" : ["testing", "花园"],
+		"views" : 0
+	}
+}'
+
+
+//使用脚本局部更新：默认脚本语言时Groovy，一个快速且功能丰富的脚本语言，语法类似于JavaScript。它在一个沙盒（sandbox）中运行，以防止恶意用户毁坏Elasticsearch或者攻击服务器
+//脚本改变_source字段内容，它再脚本内部以ctx._source表示: 没有Groovy，暂时不测试
+curl -XPOST 'http://localhost:9200/website/blog/123/_update' -d '{
+	"script" : "ctx._source.views += 1"
+}'
