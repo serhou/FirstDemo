@@ -198,3 +198,55 @@ curl -XPOST 'http://localhost:9200/website/blog/123/_update' -d '{
 curl -XPOST 'http://localhost:9200/website/blog/123/_update' -d '{
 	"script" : "ctx._source.views += 1"
 }'
+
+
+//检索多个文档  文档不存在并不影响其他文档的检索。每个文档的检索和报告都是独立的。
+//mget（multi-get）API 参数是一个docs数组，数组的每个节点定义一个文档的_index、_type、_id元数据。
+//如果你只想检索一个或几个确定的字段，也可以定义一个_source参数
+curl -XPOST 'http://localhost:9200/_mget?pretty' -d '{
+	"docs" : [
+		{
+			"_index" : "website",
+			"_type" : "blog",
+			"_id" : 2		
+		},
+		{
+			"_index" : "website",
+			"_type" : "blog",
+			"_id" : 123,
+			"_source" : "tags"
+		},
+		{
+			"_index" : "website",
+			"_type" : "blog",
+			"_id" : 123
+		}
+	]
+}'
+
+
+//如果你想检索的文档在同一个_index中(甚至在同一个_type中)，你就可以在URL中定义一个默认的/_index或者/_index/_type
+
+curl -XPOST 'http://localhost:9200/website/blog/_mget?pretty' -d '{
+	"docs" : [
+		{
+			"_id" : 2		
+		},
+		{
+			"_id" : 123,
+			"_source" : "tags"
+		},
+		{
+			"_type" : "pageviews",
+			"_id" : 123
+		}
+	]
+}'
+
+//事实上，如果所有文档具有相同_index和_type，你可以通过简单的ids数组来代替完整的docs数组
+
+curl -XPOST 'http://localhost:9200/website/blog/_mget?pretty' -d '{
+	"ids" : ["2", "123"]
+}'
+
+//注意：尽管前面提到的有文档没有被找到，但HTTP请求状态码还是200。事实上，就算所有文档都找不到，请求也还是返回200,原因是mget请求本身成功了。如果想知道每个文档是否都成功了，你需要检查found标识。
