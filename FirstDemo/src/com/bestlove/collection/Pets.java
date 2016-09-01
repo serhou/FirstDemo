@@ -20,6 +20,14 @@ public class Pets implements Pet{
 	public String eat(String food) {
 		return food;
 	}
+
+	public static Pet[] createArray(int i) {
+		Pet[] p = new Pets[i];
+		for (int j = 0; j < i; j++) {
+			p[j] = new Pets();
+		}
+		return p;
+	}
 	
 	
 }
