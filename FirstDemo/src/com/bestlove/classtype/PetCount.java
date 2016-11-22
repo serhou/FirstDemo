@@ -22,9 +22,9 @@ public class PetCount {
 		}
 	}
 	
-	public static void countPets(PetCreator creator) {
+	public static void countPets(PetCreator creator, int count) {
 		PetCounter counter = new PetCounter();
-		for (Pet pet : creator.createArray(20)) {//随机产生20个
+		for (Pet pet : creator.createArray(count)) {//随机产生20个
 			System.out.print(pet.getClass().getSimpleName() + " ");
 			if(pet instanceof Pet) {
 				counter.count("Pet");
@@ -68,7 +68,10 @@ public class PetCount {
 	}
 	
 	public static void main(String[] args) {
-		countPets(new ForNameCreator());
+		//使用Class.forName()
+		countPets(new ForNameCreator(), 20);
+		//使用类字面常量
+		countPets(new LiteralPetCreator(), 5);
 	}
 	
 }
