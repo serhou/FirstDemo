@@ -3,6 +3,12 @@ package com.bestlove.classtype;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 生成Class对象
+ * @author think
+ *
+ */
+
 public class ForNameCreator extends PetCreator {
 
 	private static List<Class<? extends Pet>> types =

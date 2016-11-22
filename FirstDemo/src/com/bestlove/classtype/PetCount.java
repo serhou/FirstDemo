@@ -2,10 +2,17 @@ package com.bestlove.classtype;
 
 import java.util.HashMap;
 
+/**
+ * 类型计数
+ * @author think
+ *
+ */
+
 public class PetCount {
 
 	static class PetCounter extends HashMap<String, Integer> {
 		public void count(String type) {
+			//利用Map的key不能重复来计数
 			Integer quantity = get(type);
 			if(quantity == null) {
 				put(type, 1);
@@ -17,7 +24,7 @@ public class PetCount {
 	
 	public static void countPets(PetCreator creator) {
 		PetCounter counter = new PetCounter();
-		for (Pet pet : creator.createArray(20)) {
+		for (Pet pet : creator.createArray(20)) {//随机产生20个
 			System.out.print(pet.getClass().getSimpleName() + " ");
 			if(pet instanceof Pet) {
 				counter.count("Pet");
@@ -34,13 +41,13 @@ public class PetCount {
 			if(pet instanceof Cat){
 				counter.count("Cat");
 			}
-			if(pet instanceof Manx){
+			if(pet instanceof EgyptianMau){
 				counter.count("EgyptianMau");
 			}
 			if(pet instanceof Manx){
 				counter.count("Manx");
 			}
-			if(pet instanceof Manx){
+			if(pet instanceof Cymric){
 				counter.count("Cymric");
 			}
 			if(pet instanceof Rodent){
@@ -57,7 +64,7 @@ public class PetCount {
 			}
 		}
 		System.out.println();
-		System.out.println(counter);
+		System.out.println(counter);//map对象的toString方法
 	}
 	
 	public static void main(String[] args) {
